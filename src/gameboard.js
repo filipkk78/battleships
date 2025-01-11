@@ -36,9 +36,13 @@ class Gameboard {
             return "Coords already occupied";
           }
         }
+        this.ships.push(new Ship(length));
         for (let i = 0; i < length; i++) {
           this.coords.get(`${coordsX}, ${coordsY + i}`).mark =
-            this.ships.length;
+            this.ships.length - 1;
+          this.ships
+            .at(this.ships.length - 1)
+            .coords.push(`${coordsX}, ${coordsY + i}`);
         }
         break;
       case "down":
@@ -47,9 +51,13 @@ class Gameboard {
             return "Coords already occupied";
           }
         }
+        this.ships.push(new Ship(length));
         for (let i = 0; i < length; i++) {
           this.coords.get(`${coordsX}, ${coordsY - i}`).mark =
-            this.ships.length;
+            this.ships.length - 1;
+          this.ships
+            .at(this.ships.length - 1)
+            .coords.push(`${coordsX}, ${coordsY - i}`);
         }
         break;
       case "left":
@@ -58,9 +66,13 @@ class Gameboard {
             return "Coords already occupied";
           }
         }
+        this.ships.push(new Ship(length));
         for (let i = 0; i < length; i++) {
           this.coords.get(`${coordsX - i}, ${coordsY}`).mark =
-            this.ships.length;
+            this.ships.length - 1;
+          this.ships
+            .at(this.ships.length - 1)
+            .coords.push(`${coordsX - 1}, ${coordsY}`);
         }
         break;
       case "right":
@@ -69,13 +81,16 @@ class Gameboard {
             return "Coords already occupied";
           }
         }
+        this.ships.push(new Ship(length));
         for (let i = 0; i < length; i++) {
           this.coords.get(`${coordsX + i}, ${coordsY}`).mark =
-            this.ships.length;
+            this.ships.length - 1;
+          this.ships
+            .at(this.ships.length - 1)
+            .coords.push(`${coordsX + 1}, ${coordsY}`);
         }
         break;
     }
-    this.ships.push(new Ship(length));
   }
   receiveAttack(coordsX, coordsY) {
     if (this.coords.get(`${coordsX}, ${coordsY}`).hit === true) {
@@ -86,7 +101,17 @@ class Gameboard {
       return "You missed";
     }
     this.ships.at(this.coords.get(`${coordsX}, ${coordsY}`)).hit();
-    console.log(this.ships.at(this.coords.get(`${coordsX}, ${coordsY}`).mark));
+    this.coords.get(`${coordsX}, ${coordsY}`).hit = true;
+    if (
+      this.ships.at(this.coords.get(`${coordsX}, ${coordsY}`)).status === "sunk"
+    ) {
+      const shipCoords = this.ships.at(
+        this.coords.get(`${coordsX}, ${coordsY}`)
+      ).coords;
+      shipCoords.forEach((coord) => {
+        this.coords.get(coord).mark = "S";
+      });
+    }
   }
   areSunk() {
     let temp = true;

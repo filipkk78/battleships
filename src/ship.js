@@ -3,6 +3,7 @@ class Ship {
     this.length = length;
     this.timesHit = 0;
     this.status = "alive";
+    this.coords = [];
   }
   isSunk() {
     if (this.timesHit === this.length) {
