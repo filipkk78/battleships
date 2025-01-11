@@ -85,7 +85,7 @@ class Gameboard {
     if (this.coords.get(`${coordsX}, ${coordsY}`).mark === "X") {
       return "You missed";
     }
-    this.ships.at(this.coords.get(`${coordsX}, ${coordsY}`)).timesHit++;
+    this.ships.at(this.coords.get(`${coordsX}, ${coordsY}`)).hit();
     console.log(this.ships.at(this.coords.get(`${coordsX}, ${coordsY}`).mark));
   }
   areSunk() {
