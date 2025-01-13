@@ -62,12 +62,13 @@ body {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-rows: 10% 80% 10%;
+  grid-template-rows: 15% 75% 10%;
   color: white;
 }
 
 header,
 footer {
+  flex-direction: column;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -85,7 +86,7 @@ main {
   display: grid;
   grid-template: repeat(10, 1fr) / repeat(10, 1fr);
   gap: 5px;
-  background-color: white;
+  background-color: rgb(116, 115, 115);
   width: 500px;
   height: 500px;
   padding: 5px;
@@ -149,4 +150,11 @@ main {
   font-weight: 900;
   justify-content: center;
   align-items: center;
+}
+
+.hit {
+  color: rgb(255, 255, 255);
+  opacity: 30%;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: rgb(0, 0, 0);
 }
