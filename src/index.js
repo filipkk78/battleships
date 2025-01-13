@@ -46,18 +46,30 @@ const game = {
   },
   attack(player, playerBoard, x, y) {
     player.board.receiveAttack(x, y);
-    loadBoard(player, playerBoard);
   },
-  loadCoveredBoard(board) {
-    while (board.firstChild) {
-      board.removeChild(board.lastChild);
+  loadCoveredBoard(enemyBoard, enemy) {
+    while (enemyBoard.firstChild) {
+      enemyBoard.removeChild(enemyBoard.lastChild);
     }
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
         const tile = document.createElement("div");
         tile.className = "tile";
         tile.textContent = "";
-        board.appendChild(tile);
+        tile.addEventListener("click", () => {
+          this.attack(enemy, enemyBoard, i, j);
+          tile.classList.add("hit");
+          if (enemy.board.coords.get(`${i}, ${j}`).mark === "X") {
+            tile.textContent = "X";
+          } else {
+            tile.textContent = enemy.board.ships
+              .at(enemy.board.coords.get(`${i}, ${j}`).mark)
+              .type.charAt(0)
+              .toUpperCase();
+          }
+          console.log(enemy.board.ships);
+        });
+        enemyBoard.appendChild(tile);
       }
     }
   },
@@ -65,11 +77,11 @@ const game = {
     if (player === playerOne) {
       this.loadBoard(player, boardOne);
       playerDisplay.textContent = "Current player: P1";
-      this.loadCoveredBoard(boardTwo);
+      this.loadCoveredBoard(boardTwo, playerTwo);
     } else {
       this.loadBoard(player, boardTwo);
       playerDisplay.textContent = "Current player: P2";
-      this.loadCoveredBoard(boardOne);
+      this.loadCoveredBoard(boardOne, playerOne);
     }
   },
   playGame() {},
@@ -86,3 +98,5 @@ document.querySelector("footer").addEventListener("click", () => {
 document.querySelector("header").addEventListener("click", () => {
   game.playRound(playerTwo);
 });
+
+console.log(playerOne.board);
