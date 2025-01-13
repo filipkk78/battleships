@@ -45,13 +45,13 @@ class Gameboard {
         break;
     }
     if (directionCheck > 9 || directionCheck < -1) {
-      return "Invalid coords";
+      throw new Error("Invalid coords");
     }
     switch (direction) {
       case "up":
         for (let i = 0; i < length; i++) {
           if (this.coords.get(`${coordsX}, ${coordsY + i}`).mark !== "X") {
-            return "Coords already occupied";
+            throw new Error(`${type} can't be overlapping with other ships`);
           }
         }
         this.ships.push(new Ship(type, length));
@@ -66,7 +66,7 @@ class Gameboard {
       case "down":
         for (let i = 0; i < length; i++) {
           if (this.coords.get(`${coordsX}, ${coordsY - i}`).mark !== "X") {
-            return "Coords already occupied";
+            throw new Error(`${type} can't be overlapping with other ships`);
           }
         }
         this.ships.push(new Ship(type, length));
@@ -81,7 +81,7 @@ class Gameboard {
       case "left":
         for (let i = 0; i < length; i++) {
           if (this.coords.get(`${coordsX - i}, ${coordsY}`).mark !== "X") {
-            return "Coords already occupied";
+            throw new Error(`${type} can't be overlapping with other ships`);
           }
         }
         this.ships.push(new Ship(type, length));
@@ -96,7 +96,7 @@ class Gameboard {
       case "right":
         for (let i = 0; i < length; i++) {
           if (this.coords.get(`${coordsX + i}, ${coordsY}`).mark !== "X") {
-            return "Coords already occupied";
+            throw new Error(`${type} can't be overlapping with other ships`);
           }
         }
         this.ships.push(new Ship(type, length));
