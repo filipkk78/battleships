@@ -80,7 +80,7 @@ class Gameboard {
         break;
       case "left":
         for (let i = 0; i < length; i++) {
-          if (this.coords.get(`${coordsX - 1}, ${coordsY}`).mark !== "X") {
+          if (this.coords.get(`${coordsX - i}, ${coordsY}`).mark !== "X") {
             return "Coords already occupied";
           }
         }
@@ -95,7 +95,7 @@ class Gameboard {
         break;
       case "right":
         for (let i = 0; i < length; i++) {
-          if (this.coords.get(`${coordsX - 1}, ${coordsY}`).mark !== "X") {
+          if (this.coords.get(`${coordsX + i}, ${coordsY}`).mark !== "X") {
             return "Coords already occupied";
           }
         }
