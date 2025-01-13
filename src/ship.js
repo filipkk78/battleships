@@ -1,5 +1,6 @@
 class Ship {
-  constructor(length) {
+  constructor(type, length) {
+    this.type = type;
     this.length = length;
     this.timesHit = 0;
     this.status = "alive";

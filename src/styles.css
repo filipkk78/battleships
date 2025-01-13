@@ -1,0 +1,152 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+#root,
+#__next {
+  isolation: isolate;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src:
+    url("fonts/roboto-regular-webfont.woff2") format("woff2"),
+    url("fonts/roboto-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-family: "Roboto";
+}
+
+body {
+  background-color: rgb(33, 33, 33);
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 10% 80% 10%;
+  color: white;
+}
+
+header,
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 150%;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.board {
+  display: grid;
+  grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+  gap: 5px;
+  background-color: white;
+  width: 500px;
+  height: 500px;
+  padding: 5px;
+  transform: rotate(270deg);
+}
+
+.tile {
+  background-color: rgb(0, 140, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 900;
+  transform: rotate(90deg);
+}
+
+.submarine {
+  background-color: rgb(0, 255, 106);
+}
+
+.carrier {
+  background-color: bisque;
+}
+
+.destroyer {
+  background-color: rgb(128, 26, 187);
+}
+
+.battleship {
+  background-color: rgb(231, 11, 48);
+}
+
+.patrolboat {
+  background-color: rgb(105, 17, 21);
+}
+
+#boardOne,
+#boardTwo {
+  grid-area: 1 / 2 / 2 / 3;
+}
+
+.board-wrapper-left,
+.board-wrapper-right {
+  display: grid;
+  grid-template: 500px 44.5px / 44.5px 500px;
+}
+
+.upper-coords {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-area: 2 / 2 / 3 / 3;
+}
+
+.side-coords {
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.coord-tile {
+  display: flex;
+  font-weight: 900;
+  justify-content: center;
+  align-items: center;
+}

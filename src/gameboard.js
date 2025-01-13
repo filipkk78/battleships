@@ -10,7 +10,25 @@ class Gameboard {
     }
     this.ships = [];
   }
-  placeShip(length, coordsX, coordsY, direction) {
+  placeShip(type, coordsX, coordsY, direction) {
+    let length;
+    switch (type) {
+      case "carrier":
+        length = 5;
+        break;
+      case "battleship":
+        length = 4;
+        break;
+      case "destroyer":
+        length = 3;
+        break;
+      case "submarine":
+        length = 3;
+        break;
+      case "patrolboat":
+        length = 2;
+        break;
+    }
     let directionCheck;
     switch (direction) {
       case "up":
@@ -26,7 +44,7 @@ class Gameboard {
         directionCheck = coordsX + length - 1;
         break;
     }
-    if (directionCheck > 9) {
+    if (directionCheck > 9 || directionCheck < -1) {
       return "Invalid coords";
     }
     switch (direction) {
@@ -36,7 +54,7 @@ class Gameboard {
             return "Coords already occupied";
           }
         }
-        this.ships.push(new Ship(length));
+        this.ships.push(new Ship(type, length));
         for (let i = 0; i < length; i++) {
           this.coords.get(`${coordsX}, ${coordsY + i}`).mark =
             this.ships.length - 1;
@@ -51,7 +69,7 @@ class Gameboard {
             return "Coords already occupied";
           }
         }
-        this.ships.push(new Ship(length));
+        this.ships.push(new Ship(type, length));
         for (let i = 0; i < length; i++) {
           this.coords.get(`${coordsX}, ${coordsY - i}`).mark =
             this.ships.length - 1;
@@ -66,7 +84,7 @@ class Gameboard {
             return "Coords already occupied";
           }
         }
-        this.ships.push(new Ship(length));
+        this.ships.push(new Ship(type, length));
         for (let i = 0; i < length; i++) {
           this.coords.get(`${coordsX - i}, ${coordsY}`).mark =
             this.ships.length - 1;
@@ -81,7 +99,7 @@ class Gameboard {
             return "Coords already occupied";
           }
         }
-        this.ships.push(new Ship(length));
+        this.ships.push(new Ship(type, length));
         for (let i = 0; i < length; i++) {
           this.coords.get(`${coordsX + i}, ${coordsY}`).mark =
             this.ships.length - 1;
