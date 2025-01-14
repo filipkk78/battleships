@@ -1,9 +1,9 @@
 import "./styles.css";
 import Player from "./player";
 
-const playerOne = new Player("human");
+let playerOne = new Player("human");
 
-const playerTwo = new Player("ai");
+let playerTwo = new Player("ai");
 
 const playerDisplay = document.querySelector("#currPlayer");
 
@@ -92,7 +92,6 @@ const game = {
           if (enemy.board.coords.get(`${i}, ${j}`).mark === "X") {
             tile.textContent = "X";
           } else {
-            tile.textContent = "mogus";
             tile.classList.add(
               enemy.board.ships.at(enemy.board.coords.get(`${i}, ${j}`).mark)
                 .type
@@ -150,10 +149,12 @@ const game = {
   },
   displayWinner() {
     if (this.winner === playerOne) {
-      playerDisplay.textContent = "P1 wins";
+      playerDisplay.textContent = "You win";
     } else {
-      playerDisplay.textContent = "P2 wins";
+      playerDisplay.textContent = "AI wins";
     }
+    playerOne = new Player("human");
+    playerTwo = new Player("ai");
   },
   randomizeShips(player) {
     while (
@@ -198,4 +199,14 @@ const game = {
     );
   },
 };
-game.play();
+
+const main = document.querySelector("main");
+main.style.visibility = "hidden";
+
+const playBtn = document.querySelector("#play");
+playBtn.addEventListener("click", () => {
+  main.style.visibility = "visible";
+  game.play();
+});
+
+// game.play();

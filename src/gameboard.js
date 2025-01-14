@@ -115,7 +115,9 @@ class Gameboard {
     if (this.coords.get(`${coordsX}, ${coordsY}`).hit === true) {
       return false;
     }
-    this.ships.at(this.coords.get(`${coordsX}, ${coordsY}`).mark).hit();
+    if (this.coords.get(`${coordsX}, ${coordsY}`).mark !== "X") {
+      this.ships.at(this.coords.get(`${coordsX}, ${coordsY}`).mark).hit();
+    }
     this.coords.get(`${coordsX}, ${coordsY}`).hit = true;
     if (
       this.ships.at(this.coords.get(`${coordsX}, ${coordsY}`)).status === "sunk"
