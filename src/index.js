@@ -1,9 +1,9 @@
 import "./styles.css";
 import Player from "./player";
+import Gameboard from "./gameboard";
 
-let playerOne = new Player("human");
-
-let playerTwo = new Player("ai");
+const playerOne = new Player();
+const playerTwo = new Player();
 
 const playerDisplay = document.querySelector("#currPlayer");
 
@@ -63,24 +63,15 @@ const game = {
     return player.board.receiveAttack(x, y);
   },
   loadCoveredBoard() {
-    let enemy;
-    let enemyBoard;
-    let currBoard;
-    if (this.currPlayer === playerOne) {
-      enemy = playerTwo;
-      enemyBoard = boardTwo;
-      currBoard = boardOne;
-    } else {
-      enemy = playerOne;
-      enemyBoard = boardOne;
-      currBoard = boardTwo;
-    }
+    const enemy = playerTwo;
+    const enemyBoard = boardTwo;
+    const currBoard = boardOne;
+
     while (enemyBoard.firstChild) {
       enemyBoard.removeChild(enemyBoard.lastChild);
     }
-    if (this.currPlayer.type === "human") {
-      this.loadBoard(this.currPlayer, currBoard);
-    }
+    this.loadBoard(this.currPlayer, currBoard);
+
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
         const tile = document.createElement("div");
@@ -101,17 +92,15 @@ const game = {
               .type.charAt(0)
               .toUpperCase();
           }
-          if (enemy.type === "ai") {
-            while (
-              !this.attack(this.currPlayer, this.rngCoord(), this.rngCoord())
-            );
-            if (this.currPlayer.board.areSunk()) {
-              this.winner = this.enemy;
-              this.loadBoard(playerOne, boardOne);
-              this.loadBoard(playerTwo, boardTwo);
-              this.displayWinner();
-              return;
-            }
+          while (
+            !this.attack(this.currPlayer, this.rngCoord(), this.rngCoord())
+          );
+          if (this.currPlayer.board.areSunk()) {
+            this.winner = this.enemy;
+            this.loadBoard(playerOne, boardOne);
+            this.loadBoard(playerTwo, boardTwo);
+            this.displayWinner();
+            return;
           }
           if (enemy.board.areSunk()) {
             this.winner = this.currPlayer;
@@ -120,41 +109,29 @@ const game = {
             this.displayWinner();
             return;
           }
-          if (enemy.type === "human") {
-            this.currPlayer = enemy;
-            this.loadCoveredBoard();
-          }
-          if (enemy.type === "ai") {
-            this.loadBoard(this.currPlayer, currBoard);
-          }
+          this.loadBoard(this.currPlayer, currBoard);
         });
         enemyBoard.appendChild(tile);
       }
     }
   },
   play() {
+    playBtn.style.visibility = "hidden";
     this.randomizeShips(playerOne);
     this.randomizeShips(playerTwo);
-    this.loadBoard(playerOne, boardOne);
-    this.loadBoard(playerTwo, boardTwo);
-    if (this.currPlayer === playerOne) {
-      this.loadBoard(this.currPlayer, boardOne);
-      playerDisplay.textContent = "Current player: P1";
-      this.loadCoveredBoard(boardTwo, playerTwo);
-    } else {
-      this.loadBoard(this.currPlayer, boardTwo);
-      playerDisplay.textContent = "Current player: P2";
-      this.loadCoveredBoard(boardOne, playerOne);
-    }
+    this.loadCoveredBoard(boardTwo, playerTwo);
+    playerDisplay.textContent = "";
   },
   displayWinner() {
+    playBtn.textContent = "Play again";
+    playBtn.style.visibility = "visible";
     if (this.winner === playerOne) {
       playerDisplay.textContent = "You win";
     } else {
       playerDisplay.textContent = "AI wins";
     }
-    playerOne = new Player("human");
-    playerTwo = new Player("ai");
+    playerOne.board = new Gameboard();
+    playerTwo.board = new Gameboard();
   },
   randomizeShips(player) {
     while (
@@ -208,5 +185,3 @@ playBtn.addEventListener("click", () => {
   main.style.visibility = "visible";
   game.play();
 });
-
-// game.play();
