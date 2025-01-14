@@ -4,18 +4,8 @@ import Gameboard from "./gameboard";
 import Player from "./player";
 
 const playerOne = new Player("human");
-// playerOne.board.placeShip("carrier", 3, 4, "up");
-// playerOne.board.placeShip("patrolboat", 1, 2, "down");
-// playerOne.board.placeShip("submarine", 3, 9, "left");
-// playerOne.board.placeShip("destroyer", 9, 0, "left");
-// playerOne.board.placeShip("battleship", 6, 9, "right");
 
-const playerTwo = new Player("human");
-// playerTwo.board.placeShip("carrier", 3, 4, "up");
-// playerTwo.board.placeShip("destroyer", 8, 1, "up");
-// playerTwo.board.placeShip("submarine", 6, 8, "right");
-// playerTwo.board.placeShip("patrolboat", 6, 6, "left");
-// playerTwo.board.placeShip("battleship", 1, 2, "right");
+const playerTwo = new Player("ai");
 
 const playerDisplay = document.querySelector("#currPlayer");
 
@@ -26,7 +16,7 @@ const game = {
   currPlayer: playerOne,
   winner: false,
   rngCoord() {
-    return Math.floor(Math.random() * (9 - 0) + 0);
+    return Math.floor(Math.random() * 10) + 1 - 1;
   },
   rngDir() {
     const temp = Math.floor(Math.random() * (4 - 1) + 1);
@@ -72,7 +62,7 @@ const game = {
     }
   },
   attack(player, x, y) {
-    player.board.receiveAttack(x, y);
+    return player.board.receiveAttack(x, y);
   },
   loadCoveredBoard() {
     let enemy;
@@ -90,7 +80,9 @@ const game = {
     while (enemyBoard.firstChild) {
       enemyBoard.removeChild(enemyBoard.lastChild);
     }
-    this.loadBoard(this.currPlayer, currBoard);
+    if (this.currPlayer.type === "human") {
+      this.loadBoard(this.currPlayer, currBoard);
+    }
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
         const tile = document.createElement("div");
@@ -102,10 +94,27 @@ const game = {
           if (enemy.board.coords.get(`${i}, ${j}`).mark === "X") {
             tile.textContent = "X";
           } else {
+            tile.textContent = "mogus";
+            tile.classList.add(
+              enemy.board.ships.at(enemy.board.coords.get(`${i}, ${j}`).mark)
+                .type
+            );
             tile.textContent = enemy.board.ships
               .at(enemy.board.coords.get(`${i}, ${j}`).mark)
               .type.charAt(0)
               .toUpperCase();
+          }
+          if (enemy.type === "ai") {
+            while (
+              !this.attack(this.currPlayer, this.rngCoord(), this.rngCoord())
+            );
+            if (this.currPlayer.board.areSunk()) {
+              this.winner = this.enemy;
+              this.loadBoard(playerOne, boardOne);
+              this.loadBoard(playerTwo, boardTwo);
+              this.displayWinner();
+              return;
+            }
           }
           if (enemy.board.areSunk()) {
             this.winner = this.currPlayer;
@@ -114,8 +123,13 @@ const game = {
             this.displayWinner();
             return;
           }
-          this.currPlayer = enemy;
-          this.loadCoveredBoard();
+          if (enemy.type === "human") {
+            this.currPlayer = enemy;
+            this.loadCoveredBoard();
+          }
+          if (enemy.type === "ai") {
+            this.loadBoard(this.currPlayer, currBoard);
+          }
         });
         enemyBoard.appendChild(tile);
       }
@@ -183,6 +197,8 @@ const game = {
   },
 };
 game.randomizeShips(playerOne);
+game.randomizeShips(playerTwo);
 game.loadBoard(playerOne, boardOne);
 game.loadBoard(playerTwo, boardTwo);
-// game.play();
+console.log(playerOne.board.coords);
+game.play();

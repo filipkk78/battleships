@@ -45,14 +45,12 @@ class Gameboard {
         break;
     }
     if (directionCheck > 9 || directionCheck < -1) {
-      console.log("Invalid coords");
       return false;
     }
     switch (direction) {
       case "up":
         for (let i = 0; i < length; i++) {
           if (this.coords.get(`${coordsX}, ${coordsY + i}`).mark !== "X") {
-            console.log(`${type} can't be overlapping with other ships`);
             return false;
           }
         }
@@ -68,7 +66,6 @@ class Gameboard {
       case "down":
         for (let i = 0; i < length; i++) {
           if (this.coords.get(`${coordsX}, ${coordsY - i}`).mark !== "X") {
-            console.log(`${type} can't be overlapping with other ships`);
             return false;
           }
         }
@@ -84,7 +81,6 @@ class Gameboard {
       case "left":
         for (let i = 0; i < length; i++) {
           if (this.coords.get(`${coordsX - i}, ${coordsY}`).mark !== "X") {
-            console.log(`${type} can't be overlapping with other ships`);
             return false;
           }
         }
@@ -100,7 +96,6 @@ class Gameboard {
       case "right":
         for (let i = 0; i < length; i++) {
           if (this.coords.get(`${coordsX + i}, ${coordsY}`).mark !== "X") {
-            console.log(`${type} can't be overlapping with other ships`);
             return false;
           }
         }
@@ -118,11 +113,7 @@ class Gameboard {
   }
   receiveAttack(coordsX, coordsY) {
     if (this.coords.get(`${coordsX}, ${coordsY}`).hit === true) {
-      return "This tile has already been hit";
-    }
-    this.coords.get(`${coordsX}, ${coordsY}`).hit = true;
-    if (this.coords.get(`${coordsX}, ${coordsY}`).mark === "X") {
-      return "You missed";
+      return false;
     }
     this.ships.at(this.coords.get(`${coordsX}, ${coordsY}`).mark).hit();
     this.coords.get(`${coordsX}, ${coordsY}`).hit = true;
@@ -136,6 +127,7 @@ class Gameboard {
         this.coords.get(coord).mark = "S";
       });
     }
+    return true;
   }
   areSunk() {
     let temp = true;
