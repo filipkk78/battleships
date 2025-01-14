@@ -1,6 +1,4 @@
 import "./styles.css";
-import Ship from "./ship";
-import Gameboard from "./gameboard";
 import Player from "./player";
 
 const playerOne = new Player("human");
@@ -136,6 +134,10 @@ const game = {
     }
   },
   play() {
+    this.randomizeShips(playerOne);
+    this.randomizeShips(playerTwo);
+    this.loadBoard(playerOne, boardOne);
+    this.loadBoard(playerTwo, boardTwo);
     if (this.currPlayer === playerOne) {
       this.loadBoard(this.currPlayer, boardOne);
       playerDisplay.textContent = "Current player: P1";
@@ -196,9 +198,4 @@ const game = {
     );
   },
 };
-game.randomizeShips(playerOne);
-game.randomizeShips(playerTwo);
-game.loadBoard(playerOne, boardOne);
-game.loadBoard(playerTwo, boardTwo);
-console.log(playerOne.board.coords);
 game.play();
