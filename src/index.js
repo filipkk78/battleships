@@ -4,18 +4,18 @@ import Gameboard from "./gameboard";
 import Player from "./player";
 
 const playerOne = new Player("human");
-playerOne.board.placeShip("carrier", 3, 4, "up");
-playerOne.board.placeShip("patrolboat", 1, 2, "down");
-playerOne.board.placeShip("submarine", 3, 9, "left");
-playerOne.board.placeShip("destroyer", 9, 0, "left");
-playerOne.board.placeShip("battleship", 6, 9, "right");
+// playerOne.board.placeShip("carrier", 3, 4, "up");
+// playerOne.board.placeShip("patrolboat", 1, 2, "down");
+// playerOne.board.placeShip("submarine", 3, 9, "left");
+// playerOne.board.placeShip("destroyer", 9, 0, "left");
+// playerOne.board.placeShip("battleship", 6, 9, "right");
 
 const playerTwo = new Player("human");
-playerTwo.board.placeShip("carrier", 3, 4, "up");
-playerTwo.board.placeShip("destroyer", 8, 1, "up");
-playerTwo.board.placeShip("submarine", 6, 8, "right");
-playerTwo.board.placeShip("patrolboat", 6, 6, "left");
-playerTwo.board.placeShip("battleship", 1, 2, "right");
+// playerTwo.board.placeShip("carrier", 3, 4, "up");
+// playerTwo.board.placeShip("destroyer", 8, 1, "up");
+// playerTwo.board.placeShip("submarine", 6, 8, "right");
+// playerTwo.board.placeShip("patrolboat", 6, 6, "left");
+// playerTwo.board.placeShip("battleship", 1, 2, "right");
 
 const playerDisplay = document.querySelector("#currPlayer");
 
@@ -25,6 +25,28 @@ const boardTwo = document.querySelector("#boardTwo");
 const game = {
   currPlayer: playerOne,
   winner: false,
+  rngCoord() {
+    return Math.floor(Math.random() * (9 - 0) + 0);
+  },
+  rngDir() {
+    const temp = Math.floor(Math.random() * (4 - 1) + 1);
+    let dir;
+    switch (temp) {
+      case 1:
+        dir = "up";
+        break;
+      case 2:
+        dir = "down";
+        break;
+      case 3:
+        dir = "left";
+        break;
+      case 4:
+        dir = "right";
+        break;
+    }
+    return dir;
+  },
   loadBoard(player, board) {
     while (board.firstChild) {
       board.removeChild(board.lastChild);
@@ -117,7 +139,50 @@ const game = {
       playerDisplay.textContent = "P2 wins";
     }
   },
+  randomizeShips(player) {
+    while (
+      !player.board.placeShip(
+        "carrier",
+        this.rngCoord(),
+        this.rngCoord(),
+        this.rngDir()
+      )
+    );
+    while (
+      !player.board.placeShip(
+        "battleship",
+        this.rngCoord(),
+        this.rngCoord(),
+        this.rngDir()
+      )
+    );
+    while (
+      !player.board.placeShip(
+        "destroyer",
+        this.rngCoord(),
+        this.rngCoord(),
+        this.rngDir()
+      )
+    );
+    while (
+      !player.board.placeShip(
+        "submarine",
+        this.rngCoord(),
+        this.rngCoord(),
+        this.rngDir()
+      )
+    );
+    while (
+      !player.board.placeShip(
+        "patrolboat",
+        this.rngCoord(),
+        this.rngCoord(),
+        this.rngDir()
+      )
+    );
+  },
 };
+game.randomizeShips(playerOne);
 game.loadBoard(playerOne, boardOne);
 game.loadBoard(playerTwo, boardTwo);
-game.play();
+// game.play();

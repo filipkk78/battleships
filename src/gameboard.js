@@ -45,13 +45,15 @@ class Gameboard {
         break;
     }
     if (directionCheck > 9 || directionCheck < -1) {
-      throw new Error("Invalid coords");
+      console.log("Invalid coords");
+      return false;
     }
     switch (direction) {
       case "up":
         for (let i = 0; i < length; i++) {
           if (this.coords.get(`${coordsX}, ${coordsY + i}`).mark !== "X") {
-            throw new Error(`${type} can't be overlapping with other ships`);
+            console.log(`${type} can't be overlapping with other ships`);
+            return false;
           }
         }
         this.ships.push(new Ship(type, length));
@@ -66,7 +68,8 @@ class Gameboard {
       case "down":
         for (let i = 0; i < length; i++) {
           if (this.coords.get(`${coordsX}, ${coordsY - i}`).mark !== "X") {
-            throw new Error(`${type} can't be overlapping with other ships`);
+            console.log(`${type} can't be overlapping with other ships`);
+            return false;
           }
         }
         this.ships.push(new Ship(type, length));
@@ -81,7 +84,8 @@ class Gameboard {
       case "left":
         for (let i = 0; i < length; i++) {
           if (this.coords.get(`${coordsX - i}, ${coordsY}`).mark !== "X") {
-            throw new Error(`${type} can't be overlapping with other ships`);
+            console.log(`${type} can't be overlapping with other ships`);
+            return false;
           }
         }
         this.ships.push(new Ship(type, length));
@@ -96,7 +100,8 @@ class Gameboard {
       case "right":
         for (let i = 0; i < length; i++) {
           if (this.coords.get(`${coordsX + i}, ${coordsY}`).mark !== "X") {
-            throw new Error(`${type} can't be overlapping with other ships`);
+            console.log(`${type} can't be overlapping with other ships`);
+            return false;
           }
         }
         this.ships.push(new Ship(type, length));
@@ -109,6 +114,7 @@ class Gameboard {
         }
         break;
     }
+    return true;
   }
   receiveAttack(coordsX, coordsY) {
     if (this.coords.get(`${coordsX}, ${coordsY}`).hit === true) {
